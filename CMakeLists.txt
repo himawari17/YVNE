@@ -17,7 +17,6 @@ option(VN_VENDORED_DEPENDENCIES
 include(cmake/Dependencies.cmake)
 
 add_library(yvne STATIC
-	src/version.c
     src/core/logger.c
     src/core/engine.c
     src/core/timer.c
@@ -30,6 +29,9 @@ add_library(yvne STATIC
 	src/resource/stream.c
 	src/resource/directory_mount.c
 	src/assets/texture.c
+    src/render_gl/texture.c
+    src/render_gl/renderer.c
+    src/render_gl/viewport.c
 )
 
 target_include_directories(yvne PUBLIC inc)

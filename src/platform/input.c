@@ -15,6 +15,7 @@ YVNE_Input* YVNE_InputInit(void){
 	YVNE_LOG_ERROR("UNABLE TO ALLOCATE INPUT STRUCT!");
 	return nullptr;
   }
+  YVNE_LOG_INFO("INPUT SYSTEM READY");
   return input;
 }
 void YVNE_InputDestroy(YVNE_Input *input){
@@ -23,6 +24,7 @@ void YVNE_InputDestroy(YVNE_Input *input){
 	return;
   }
   free(input);
+  YVNE_LOG_INFO("INPUT SYSTEM DESTROYED");
 }
 
 void YVNE_InputOnFrame(YVNE_Input *input){
@@ -70,6 +72,8 @@ void YVNE_InputHandle(YVNE_Input *input, const SDL_Event *event){
 	  break;
 	case SDL_EVENT_MOUSE_BUTTON_DOWN:
 	case SDL_EVENT_MOUSE_BUTTON_UP:{
+	  input->state.mouse.mouse_x = event->button.x;
+	  input->state.mouse.mouse_y = event->button.y;
 	  const bool down = event->type == SDL_EVENT_MOUSE_BUTTON_DOWN;
 	  if(event->button.button == SDL_BUTTON_LEFT){
 		YVNE_InputSetAction(&input->state.mouse.left, down);

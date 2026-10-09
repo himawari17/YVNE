@@ -64,7 +64,10 @@ static void test_mouse(YVNE_Input *input)
     for (size_t i = 0; i < 2; ++i) {
         event = (SDL_Event){.type = SDL_EVENT_MOUSE_BUTTON_DOWN};
         event.button.button = buttons[i];
+        event.button.x = 40.5f + (float)i;
+        event.button.y = 60.0f;
         YVNE_InputHandle(input, &event);
+        assert(mouse->mouse_x == event.button.x && mouse->mouse_y == event.button.y);
         assert(states[i]->down && states[i]->pressed && !states[i]->released);
         YVNE_InputOnFrame(input);
         assert(states[i]->down && !states[i]->pressed && !states[i]->released);

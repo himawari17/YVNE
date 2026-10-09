@@ -2,7 +2,7 @@ add_executable(vndeps dependencies_test.c)
 target_link_libraries(vndeps PRIVATE yvne::dependencies)
 
 set(YVNE_TEST_TARGETS vndeps)
-foreach(component IN ITEMS version logger timer frame_clock input paths manifest vfs stream assets platform engine)
+foreach(component IN ITEMS logger timer frame_clock input paths manifest vfs stream assets viewport renderer platform engine)
     add_executable(vn${component} ${component}_test.c)
     target_link_libraries(vn${component} PRIVATE yvne SDL3::SDL3)
     list(APPEND YVNE_TEST_TARGETS vn${component})
@@ -21,9 +21,9 @@ foreach(target IN LISTS YVNE_TEST_TARGETS)
     )
 endforeach()
 
-target_compile_definitions(vnversion PRIVATE YVNE_TEST_VERSION="${PROJECT_VERSION}")
 target_link_libraries(vnengine PRIVATE yvne::glad)
 target_link_libraries(vnplatform PRIVATE yvne::glad)
+target_link_libraries(vnrenderer PRIVATE yvne::glad)
 target_include_directories(vnassets SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/third_party/stb")
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/assets")
 target_compile_definitions(vnassets PRIVATE
@@ -58,18 +58,21 @@ function(yvne_add_test name target)
 endfunction()
 
 yvne_add_test(dependencies_link vndeps)
-foreach(component IN ITEMS version logger timer frame_clock input paths manifest vfs stream assets)
+foreach(component IN ITEMS logger timer frame_clock input paths manifest vfs stream assets viewport)
     yvne_add_test(${component}_unit vn${component})
 endforeach()
 yvne_add_test(platform_failure vnplatform)
 yvne_add_test(engine_smoke vnengine)
+yvne_add_test(renderer_smoke vnrenderer)
 
-set_tests_properties(dependencies_link version_unit logger_unit PROPERTIES LABELS "M0;unit")
+set_tests_properties(dependencies_link logger_unit PROPERTIES LABELS "M0;unit")
 set_tests_properties(timer_unit frame_clock_unit input_unit paths_unit manifest_unit vfs_unit stream_unit
     PROPERTIES LABELS "M1;unit")
 set_tests_properties(platform_failure PROPERTIES LABELS "M1;integration")
 set_tests_properties(engine_smoke PROPERTIES LABELS "M0;M1;graphics;integration" RUN_SERIAL TRUE TIMEOUT 20)
 set_tests_properties(assets_unit PROPERTIES LABELS "M2;unit")
+set_tests_properties(viewport_unit PROPERTIES LABELS "M2;unit")
+set_tests_properties(renderer_smoke PROPERTIES LABELS "M2;graphics;integration" RUN_SERIAL TRUE TIMEOUT 20)
 set_tests_properties(logger_unit PROPERTIES
     PASS_REGULAR_EXPRESSION "\\[WARN\\] logger_test.c:42: logger value: 7[\r\n]+[^\r\n]*\\[ERROR\\] logger_test.c:43: error test[\r\n]+[^\r\n]*\\[UNKNOWN\\] logger_test.c:44: unknown level test"
 )

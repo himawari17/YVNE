@@ -7,10 +7,6 @@ YVNEngine - is a cross-patform VN engine created using modern C:23 language.
 YVNE uses SDL3 for handling window and input events. Powered by OpenGL renderer.
 Vulkan and Metal native support in future.
 
-Images are decoded with vendored stb_image through the VFS. PNG and JPEG are
-covered by tests; WebP is not supported. Images are limited to 4096 pixels per
-dimension and stored as RGBA8 with alpha premultiplied in sRGB space.
-
 ## Requirements
 
 - CMake 3.25 or newer;
@@ -18,13 +14,12 @@ dimension and stored as RGBA8 with alpha premultiplied in sRGB space.
 - Video driver which supports OpenGL 3.3 Core;
 - Ninja, Make .
 
-
 ## Compile and run
 
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 cmake --build build --parallel
-./build/bin/vn
+./build/bin/vn.app/Contents/MacOs/vn
 ```
 
 Release:
@@ -60,9 +55,9 @@ the build directory; no local `test_project` is required.
 
 | Stage | Current checks |
 |---|---|
-| M0 | Dependency linking, project version, logging, SDL/OpenGL smoke test |
+| M0 | Dependency linking, logging, SDL/OpenGL smoke test |
 | M1 | Timer pause/resume/finish, frame delta clamp, keyboard/mouse input, base path, manifest validation, VFS/streams, failed initialization cleanup, engine startup/quit/shutdown |
-| M2 (implemented part) | PNG/JPEG decoding, RGBA pixels, premultiplied alpha, image size limits, missing/corrupt/wrong-type asset placeholders |
+| M2 (implemented part) | PNG/JPEG decoding, RGBA pixels, premultiplied alpha, asset limits/placeholders, GL texture uploads, sprite rendering, viewport and DPI/input mapping |
 
 Run already built tests, or select an individual stage:
 
@@ -72,8 +67,9 @@ ctest --test-dir build -L M1 --output-on-failure
 ctest --test-dir build -R '^timer_unit$' --output-on-failure
 ```
 
-`engine_smoke` needs a graphical session and OpenGL 3.3 Core. It briefly creates
-windows, checks rendered pixels, and exits through an injected quit event.
+`engine_smoke` and `renderer_smoke` need a graphical session and OpenGL 3.3 Core.
+They briefly create windows and check rendered pixels, rendering after resize,
+and engine shutdown through an injected quit event.
 Without a display/GPU, build normally and run the tests without the `graphics`
 label:
 
@@ -81,10 +77,6 @@ label:
 cmake --build build --parallel
 ctest --test-dir build -LE graphics --output-on-failure
 ```
-
-Renderer/scene/text beyond image loading and stages M3–M8 have no implementation
-yet, so they have no tests. Resize/fullscreen/focus behavior still needs manual
-checks.
 
 ## Compiler parameters
 
