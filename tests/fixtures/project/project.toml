@@ -1,0 +1,12 @@
+manifest_version = 1
+project_id = "dev.test"
+
+[[assets]]
+id = 0
+type = "script"
+path = "assets/sample.txt"
+
+[[assets]]
+id = 1
+type = "image"
+path = "assets/missing.png"

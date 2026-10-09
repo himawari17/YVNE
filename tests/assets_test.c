@@ -3,9 +3,6 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
 
-#ifdef NDEBUG
-#undef NDEBUG
-#endif
 #include <assert.h>
 #include <stdio.h>
 
@@ -134,6 +131,10 @@ int main(void)
     }
 
     YVNE_DirectoryMountDestroy(&mount);
+    asset = YVNE_TextureLoad(NULL, 1);
+    assert(asset != NULL && asset->id == 1);
+    assert(asset->surface->w == 2 && asset->surface->h == 2);
+    YVNE_TextureDestroy(&asset);
     for (size_t i = 0; i < 7; ++i) {
         if (i != 2) {
             assert(SDL_RemovePath(paths[i]));

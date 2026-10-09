@@ -5,6 +5,6 @@
 
 int main(void)
 {
-    assert(strcmp(yvne_version(), "0.1.0") == 0);
+    assert(strcmp(yvne_version(), YVNE_TEST_VERSION) == 0);
     return 0;
 }

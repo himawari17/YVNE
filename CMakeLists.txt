@@ -90,54 +90,5 @@ target_compile_options(vn PRIVATE ${VN_WARNING_FLAGS})
 include(CTest)
 
 if(BUILD_TESTING)
-    add_executable(vndeps tests/dependencies_test.c)
-    target_link_libraries(vndeps PRIVATE yvne::dependencies)
-    target_compile_options(vndeps PRIVATE ${VN_WARNING_FLAGS})
-    set_target_properties(vndeps PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-    )
-
-    add_executable(vnlogger tests/logger_test.c)
-    target_link_libraries(vnlogger PRIVATE yvne)
-    target_compile_options(vnlogger PRIVATE ${VN_WARNING_FLAGS})
-    set_target_properties(vnlogger PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-    )
-
-    add_executable(vnmanifest tests/manifest_test.c)
-    target_link_libraries(vnmanifest PRIVATE yvne)
-    target_compile_options(vnmanifest PRIVATE ${VN_WARNING_FLAGS})
-    target_compile_definitions(vnmanifest PRIVATE
-        YVNE_TEST_PROJECT_DIR="${PROJECT_SOURCE_DIR}/test_project"
-    )
-    set_target_properties(vnmanifest PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-    )
-
-    add_executable(vnvfs tests/vfs_test.c)
-    target_link_libraries(vnvfs PRIVATE yvne)
-    target_compile_options(vnvfs PRIVATE ${VN_WARNING_FLAGS})
-    target_compile_definitions(vnvfs PRIVATE
-        YVNE_TEST_PROJECT_DIR="${PROJECT_SOURCE_DIR}/test_project"
-    )
-    set_target_properties(vnvfs PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-    )
-
-    add_executable(vnassets tests/assets_test.c)
-    target_link_libraries(vnassets PRIVATE yvne SDL3::SDL3)
-    target_include_directories(vnassets SYSTEM PRIVATE third_party/stb)
-    target_compile_options(vnassets PRIVATE ${VN_WARNING_FLAGS})
-    target_compile_definitions(vnassets PRIVATE
-        YVNE_TEST_BINARY_DIR="${CMAKE_BINARY_DIR}/tests"
-    )
-    set_target_properties(vnassets PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-    )
-
-    add_test(NAME dependencies_link COMMAND vndeps)
-    add_test(NAME logger_unit COMMAND vnlogger)
-    add_test(NAME manifest_unit COMMAND vnmanifest)
-    add_test(NAME vfs_unit COMMAND vnvfs)
-    add_test(NAME assets_unit COMMAND vnassets)
+    add_subdirectory(tests)
 endif()
