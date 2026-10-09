@@ -25,7 +25,7 @@ static int dump_manifest(const char *project_path)
         return EXIT_FAILURE;
     }
 
-    printf("schema_version: %u\n", manifest.schema_version);
+    printf("manifest_version: %u\n", manifest.manifest_version);
     printf("project_id: %s\n", manifest.project_id.str);
     printf("assets: %u\n", manifest.asset_count);
 
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     }
 
     static const char valid[] =
-        "schema_version = 1 # current format\n"
+        "manifest_version = 1 # current format\n"
         "project_id = \"dev.тест#1\"\n"
         "[[assets]]\n"
         "id = 0\n"
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 
     YVNE_Manifest manifest = {0};
     assert(parse(valid, &manifest));
-    assert(manifest.schema_version == YVNE_MANIFEST_SCHEMA_VERSION);
+    assert(manifest.manifest_version == YVNE_MANIFEST_VERSION);
     assert(manifest.asset_count == 1);
     assert(YVNE_ManifestFindResource(&manifest, 0) != NULL);
     assert(YVNE_ManifestFindResource(&manifest, 1) == NULL);

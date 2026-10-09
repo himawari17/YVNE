@@ -103,7 +103,7 @@ bool YVNE_ManifestParse(const char *data, size_t size, YVNE_Manifest *manifest)
     }
 
     YVNE_AssetDescription *asset = NULL;
-    bool has_schema_version = false;
+    bool has_manifest_version = false;
     bool has_project_id = false;
     bool has_asset_id = false;
     bool has_asset_type = false;
@@ -177,14 +177,14 @@ bool YVNE_ManifestParse(const char *data, size_t size, YVNE_Manifest *manifest)
         char *key = YVNE_Trim(line);
         char *value = YVNE_Trim(equals + 1);
 
-        if (asset == NULL && SDL_strcmp(key, "schema_version") == 0) {
-            if (has_schema_version ||
-                !YVNE_ParseU32(value, &manifest->schema_version) ||
-                manifest->schema_version != YVNE_MANIFEST_SCHEMA_VERSION) {
-                error = "invalid or unsupported schema_version";
+        if (asset == NULL && SDL_strcmp(key, "manifest_version") == 0) {
+            if (has_manifest_version ||
+                !YVNE_ParseU32(value, &manifest->manifest_version) ||
+                manifest->manifest_version != YVNE_MANIFEST_VERSION) {
+                error = "invalid or unsupported manifest_version";
                 goto parse_failed;
             }
-            has_schema_version = true;
+            has_manifest_version = true;
         } else if (asset == NULL && SDL_strcmp(key, "project_id") == 0) {
             if (has_project_id ||
                 !YVNE_ParseString(
@@ -240,8 +240,8 @@ bool YVNE_ManifestParse(const char *data, size_t size, YVNE_Manifest *manifest)
         line = next_line;
     }
 
-    if (!has_schema_version) {
-        error = "schema_version is missing";
+    if (!has_manifest_version) {
+        error = "manifest_version is missing";
         goto parse_failed;
     }
     if (!has_project_id) {

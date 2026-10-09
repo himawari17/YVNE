@@ -29,15 +29,21 @@ add_library(yvne STATIC
 	src/resource/manifest.c
 	src/resource/stream.c
 	src/resource/directory_mount.c
+	src/assets/texture.c
 )
 
 target_include_directories(yvne PUBLIC inc)
+target_include_directories(yvne SYSTEM PRIVATE third_party/stb)
 target_compile_features(yvne PUBLIC c_std_23)
 set_target_properties(yvne PROPERTIES C_EXTENSIONS OFF)
 
 target_compile_definitions(yvne PRIVATE YVNE_VERSION="${PROJECT_VERSION}")
 target_compile_definitions(yvne PUBLIC $<$<CONFIG:Debug>:YVNE_DEBUG=1>)
-target_link_libraries(yvne PRIVATE SDL3::SDL3 yvne::glad OpenGL::GL)
+target_link_libraries(yvne PRIVATE
+    SDL3::SDL3
+    yvne::glad
+    OpenGL::GL
+)
 
 add_executable(vn src/main.c)
 target_link_libraries(vn PRIVATE yvne yvne::dependencies)
@@ -118,8 +124,20 @@ if(BUILD_TESTING)
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
     )
 
+    add_executable(vnassets tests/assets_test.c)
+    target_link_libraries(vnassets PRIVATE yvne SDL3::SDL3)
+    target_include_directories(vnassets SYSTEM PRIVATE third_party/stb)
+    target_compile_options(vnassets PRIVATE ${VN_WARNING_FLAGS})
+    target_compile_definitions(vnassets PRIVATE
+        YVNE_TEST_BINARY_DIR="${CMAKE_BINARY_DIR}/tests"
+    )
+    set_target_properties(vnassets PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+    )
+
     add_test(NAME dependencies_link COMMAND vndeps)
     add_test(NAME logger_unit COMMAND vnlogger)
     add_test(NAME manifest_unit COMMAND vnmanifest)
     add_test(NAME vfs_unit COMMAND vnvfs)
+    add_test(NAME assets_unit COMMAND vnassets)
 endif()

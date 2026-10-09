@@ -3,7 +3,7 @@
 
 #include "../core/types.h"
 
-#define YVNE_MANIFEST_SCHEMA_VERSION 1u
+#define YVNE_MANIFEST_VERSION 1u
 #define YVNE_MANIFEST_MAX_BYTES (1024u * 1024u)
 #define YVNE_MANIFEST_MAX_ASSETS 4096u
 #define YVNE_PROJECT_ID_MAX_BYTES 128u
@@ -26,7 +26,7 @@ typedef struct{
 } YVNE_AssetDescription;
 
 typedef struct{
-    u32 schema_version;
+    u32 manifest_version;
     u32 asset_count;
     string project_id;
     YVNE_AssetDescription *assets;

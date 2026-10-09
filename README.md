@@ -7,6 +7,10 @@ YVNEngine - is a cross-patform VN engine created using modern C:23 language.
 YVNE uses SDL3 for handling window and input events. Powered by OpenGL renderer.
 Vulkan and Metal native support in future.
 
+Images are decoded with vendored stb_image through the VFS. PNG and JPEG are
+covered by tests; WebP is not supported. Images are limited to 4096 pixels per
+dimension and stored as RGBA8 with alpha premultiplied in sRGB space.
+
 ## Requirements
 
 - CMake 3.25 or newer;
@@ -38,4 +42,3 @@ cmake --build build-release --parallel
 | `VN_BUILD_MACOS_BUNDLE` | `OFF` | Create `.app`-bundle on macOS |
 | `VN_WARNINGS_AS_ERRORS` | `OFF` | Set warns as errors |
 | `BUILD_TESTING` | `ON` | Enabe testing |
-

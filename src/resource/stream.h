@@ -8,19 +8,19 @@
 typedef struct SDL_IOStream SDL_IOStream;
 typedef struct YVNE_Stream YVNE_Stream;
 
-typedef enum {
+typedef enum{
     YVNE_STREAM_SEEK_BEGIN,
     YVNE_STREAM_SEEK_CURRENT,
     YVNE_STREAM_SEEK_END,
 } YVNE_StreamOrigin;
 
-typedef enum {
+typedef enum{
     YVNE_STREAM_READ_OK,
     YVNE_STREAM_READ_EOF,
     YVNE_STREAM_READ_ERROR,
 } YVNE_StreamReadStatus;
 
-typedef struct {
+typedef struct{
     size_t bytes_read;
     YVNE_StreamReadStatus status;
 } YVNE_StreamReadResult;

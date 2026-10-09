@@ -28,25 +28,6 @@ if(VN_VENDORED_DEPENDENCIES)
     )
     FetchContent_MakeAvailable(SDL3)
 
-    set(SDLIMAGE_VENDORED ON CACHE BOOL "Vendor SDL_image dependencies" FORCE)
-    set(SDLIMAGE_DEPS_SHARED OFF CACHE BOOL "Dynamically load image codecs" FORCE)
-    set(SDLIMAGE_INSTALL OFF CACHE BOOL "Install SDL_image" FORCE)
-    set(SDLIMAGE_SAMPLES OFF CACHE BOOL "Build SDL_image samples" FORCE)
-    set(SDLIMAGE_TESTS OFF CACHE BOOL "Build SDL_image tests" FORCE)
-    set(SDLIMAGE_AVIF OFF CACHE BOOL "Enable AVIF" FORCE)
-    set(SDLIMAGE_JXL OFF CACHE BOOL "Enable JPEG XL" FORCE)
-    set(SDLIMAGE_TIF OFF CACHE BOOL "Enable TIFF" FORCE)
-    set(SDLIMAGE_PNG_LIBPNG OFF CACHE BOOL "Use libpng" FORCE)
-    FetchContent_Declare(SDL3_image
-        GIT_REPOSITORY https://github.com/libsdl-org/SDL_image.git
-        GIT_TAG bec9134a26c7d0f31b36d6083c25296e04cabff5
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE
-        GIT_SUBMODULES external/libwebp
-        GIT_SUBMODULES_RECURSE TRUE
-    )
-    FetchContent_MakeAvailable(SDL3_image)
-
     set(SDLTTF_VENDORED ON CACHE BOOL "Vendor SDL_ttf dependencies" FORCE)
     set(SDLTTF_INSTALL OFF CACHE BOOL "Install SDL_ttf" FORCE)
     set(SDLTTF_SAMPLES OFF CACHE BOOL "Build SDL_ttf samples" FORCE)
@@ -85,7 +66,6 @@ if(VN_VENDORED_DEPENDENCIES)
     FetchContent_MakeAvailable(SDL3_mixer)
 else()
     find_package(SDL3 3.4 REQUIRED CONFIG)
-    find_package(SDL3_image 3.4 REQUIRED CONFIG)
     find_package(SDL3_ttf 3.2 REQUIRED CONFIG)
     find_package(SDL3_mixer 3.2 REQUIRED CONFIG)
 endif()
@@ -93,7 +73,6 @@ endif()
 add_library(yvne_dependencies INTERFACE)
 target_link_libraries(yvne_dependencies INTERFACE
     SDL3::SDL3
-    SDL3_image::SDL3_image
     SDL3_ttf::SDL3_ttf
     SDL3_mixer::SDL3_mixer
     yvne::glad

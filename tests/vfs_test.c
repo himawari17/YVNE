@@ -87,7 +87,7 @@ int main(void)
         },
     };
     YVNE_Manifest unsafe_manifest = {
-        .schema_version = YVNE_MANIFEST_SCHEMA_VERSION,
+        .manifest_version = YVNE_MANIFEST_VERSION,
         .asset_count = 1,
         .project_id = manifest.project_id,
         .assets = &unsafe_asset,
